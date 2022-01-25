@@ -59,34 +59,17 @@ def findObject(qa_obj_list, post_id, post_type_id, QList, AList):
     return qa_obj_list
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
 
     delimiter = "\t"
-    xml_comment_link_file_path = '/Users/vishwanathlhugar/Vidya_Thesis/data/sample_input.xml'
+    xml_comment_link_file_path = '/Users/Vidya_Thesis/data/posts_input.xml'
     n = 100000
     qa_object_list = []
 
     contextWords = []
     i = 0
-
-    # # read chunks from big data
-    # with open(xml_comment_link_file_path) as f:
-    #     while True:
-    #         next_n_lines = list(islice(f, n))
-    #         print(len(next_n_lines))
-    #         if not next_n_lines:
-    #             break
-    #         # process next_n_lines
-    #
-    #         tree = ET.parse('employee.xml')
-    #         root = tree.getroot()
-    #
-    #         for elem in root:
-    #             for subelem in elem:
-    #                 print(subelem.text)
-
-    # TODO: find way to read data
+    
+    #reading the input file
     for attr_dic in xmliter(xml_comment_link_file_path, 'row'):
 
         post_id = int(attr_dic['@Id'])
@@ -99,32 +82,9 @@ if __name__ == '__main__':
         body = (attr_dic["@Body"])
         getFormulaAndContextWords(post_id, post_type_id, body, 10, qa_object_list)
         i = i + 1
-        # #listOfMathContainer = parsed_html.findAll('span')
-        # contextWords = getFormulaAndContextWords(body, 10)
-        #
-        # # parse the body - filter info inside tag - 5 window length
-        # if len(listOfMathContainer) > 0:
-        #     listOfMathContainer = list(set(listOfMathContainer))
-        #     formulaList = []
-        #
-        #     for item in listOfMathContainer:
-        #         # cleanString = item.get_text().replace('\\','')
-        #         formulaList.append(item.get_text())
-        #         if post_type_id == 1:
-        #             question = QAClass(post_id, item.get_text(), [])
-        #             #question.formula = item.get_text()
-        #         if post_type_id == 2:
-        #             answer.formula = item.get_text()
-        #     formulaList = list(set(formulaList))
-        #
-        #     # For row containing the math formulae create the qa_object
-        #     if len(formulaList) > 0:
-        #         # create object for each row acc to Q or A
-        #         qa_object_list = findObject(qa_object_list, post_id, post_type_id, formulaList)
-        #
-
+       
     # write output to a file
-    output_formula_file = open('/Users/vishwanathlhugar/Vidya_Thesis/data/new_output_file.tsv', 'w')
+    output_formula_file = open('/Users/Vidya_Thesis/data/output_file.tsv', 'w')
     output_formula_file.write("ID" + delimiter + "question" + delimiter + "question_CW" + delimiter +
                               "answer" + delimiter + "answer_CW" + "\n")
     for qa in qa_object_list:
@@ -133,11 +93,7 @@ if __name__ == '__main__':
         q_cw = []
         a_cw = []
         ans = ""
-        # ID : QList : AList in the file
-        # if len(qa.QList) > 0 and len(qa.AList) > 0:
-        #     string_qa = str(qa.ID) + delimiter + str(qa.QList) + delimiter + str(qa.AList) + "\n"
-        #     output_formula_file.write(string_qa)
-
+       
         for item_q in qa.qList:
             question = item_q.formula
             q_cw = item_q.contextWords
